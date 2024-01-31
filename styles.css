@@ -1,0 +1,72 @@
+h1{
+   text-align: center;
+   color: blue;
+}
+body{
+    background-color: black;
+}
+.pacman-game{
+    height: 500px;
+    width: 500px;
+    border: 1px solid blue;
+    margin: 0 auto;
+    
+}
+.User-Buttons{
+    display: flex;
+    justify-content:center;
+    margin-top:20px;
+}
+
+button{
+    padding: 10px;
+    font-size: larger;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: rgb(220, 150, 20);
+    border-radius: 40px;
+    font-weight: bold;
+}
+p{
+    margin-top:-5px;
+    color: blue;
+    text-align:center;
+    font-size:xx-large;
+}
+.upper-display{
+    margin-top:-10px;
+    margin-bottom:10px;
+    margin-left: 150px;
+    display: flex;
+    color: rgb(250, 250, 251);
+    font-size:x-large;
+}
+
+#score{
+    margin-left: 0px;
+}
+
+#high-score{
+    margin-left: 180px;
+}
+
+
+#pacman {
+    background-color: yellow;
+    border-radius: 24px;
+    height: 25px;
+    width: 25px;
+    clip-path: polygon(100% 0, 100% 25%, 50% 50%, 50% 50%, 100% 75%, 100% 100%, 0 100%, 0 0);
+
+  }
+  
+  /* reference : https://dev.to/lfbergee/animated-pacman-in-html-css-1ol2 */
+  #pacman {
+    animation: mouth .35s infinite cubic-bezier(0.85, 0, 0.15, 1);
+    animation-direction: alternate;
+  }
+  
+  @keyframes mouth {
+    0% { clip-path: polygon(100% 0, 100% 25%, 50% 50%, 50% 50%, 100% 75%, 100% 100%, 0 100%, 0 0) }
+    100% { clip-path: polygon(100% 0, 100% 50%, 50% 50%, 50% 50%, 100% 50%, 100% 100%, 0 100%, 0 0) }
+  }
