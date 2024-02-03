@@ -45,21 +45,83 @@ class player
     }
     clear()
     {
-        c.clearRect(this.x-(this.radius),this.y-(this.radius),this.radius*2,this.radius*2)
+       // c.clearRect(this.x-(this.radius),this.y-(this.radius),this.radius*2,this.radius*2)
+       c.clearRect(0,0,500,500)
     }
 }
 
-//Object Creation
-const pacman =  new player(20,20)
-pacman.draw()
-gameLoop()
 
+class RectBoundary{
+
+    constructor(x,y,width,height)
+    {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height =height
+    }
+
+    draw()
+    {
+        c.beginPath()
+        //context.rect(x, y, width, height);
+        c.rect(this.x,this.y,this.width,this.height)
+        c.strokeStyle = "blue";
+        c.fillStyle = "blue";
+        c.fill()
+        c.lineWidth = "2"
+        c.stroke() 
+    }
+
+}
+
+//defining layout for pacman stages
+
+const layout = [
+    [`-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`],
+    [`-`, ` `, ` `, ` `, ` `, ` `, ` `, ` `, ` `, `-`],
+    [`-`, ` `, `-`, ` `, `-`, `-`, ` `, `-`, ` `, `-`],
+    [`-`, ` `, ` `, ` `, ` `, ` `, ` `, ` `, ` `, `-`],
+    [`-`, ` `, `-`, `-`, ` `, `-`, `-`, `-`, ` `, `-`],
+    [`-`, ` `, ` `, ` `, ` `, ` `, ` `, ` `, ` `, `-`],
+    [`-`, ` `, `-`, ` `, `-`, `-`, ` `, `-`, ` `, `-`],
+    [`-`, ` `, `-`, ` `, `-`, `-`, ` `, `-`, ` `, `-`],
+    [`-`, ` `, ` `, ` `, ` `, ` `, ` `, ` `, ` `, `-`],
+    [`-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`, `-`]
+  ];
+  
+//Object Creation
+//pacman object
+const pacman =  new player(75,75)
+
+//boundary object
+let xCoordinate = 0
+let yCoordinate = 0
+let boundaryContainer = []
+layout.forEach((row)=>{
+    
+    row.forEach((element)=>{
+    
+        if(element==`-`)
+        {
+            boundaryContainer.push(new RectBoundary(xCoordinate,yCoordinate,50,50))
+        }
+        xCoordinate = xCoordinate+50
+       
+    })
+    xCoordinate=0
+    yCoordinate = yCoordinate+50
+})
+
+gameLoop()
 //All functions
 function gameLoop() {
     pacman.clear()
-    pacman.move()
+    boundaryContainer.forEach((boundary)=>{
+        boundary.draw()
+    })
     pacman.draw()
-    console.log(`what!!`)
+    pacman.move()
     requestAnimationFrame(gameLoop);
 }
 
