@@ -11,8 +11,8 @@ class player
         this.x = x
         this.y=y
         this.radius = 15
-        this.velocity_x = 1
-        this.velocity_y = 1
+        this.velocity_x = 5
+        this.velocity_y = 5
     }
 
     draw()
@@ -25,9 +25,9 @@ class player
         c.stroke() //its just giving a boundary
     }
 
-    move(receiving_key)
+    move()
     {
-        switch(receiving_key)
+        switch(currentKey)
         {
             case `w`:
                 this.y = this.y - this.velocity_y     
@@ -39,7 +39,6 @@ class player
                 this.x = this.x - this.velocity_x
                 break
             case `d`:
-                //console.log("d invoked")
                 this.x = this.x + this.velocity_x 
                 break
         }
@@ -53,14 +52,14 @@ class player
 //Object Creation
 const pacman =  new player(20,20)
 pacman.draw()
+gameLoop()
 
 //All functions
 function gameLoop() {
-    console.log(`line 62: ${currentKey}`)
     pacman.clear()
-    pacman.move(currentKey)
+    pacman.move()
     pacman.draw()
-
+    console.log(`what!!`)
     requestAnimationFrame(gameLoop);
 }
 
@@ -69,7 +68,6 @@ document.addEventListener(`keydown`,(event)=>{
     currentKey = event.key
     if(previousKey != currentKey)
     {
-        gameLoop()
         previousKey = currentKey
     }
     
