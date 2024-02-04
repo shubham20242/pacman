@@ -3,16 +3,17 @@ let canvas = document.getElementById("myCanvas");
 let c = canvas.getContext("2d");
 let previousKey = null
 let currentKey = null
+let flag = true
 
 class player
 {
-    constructor(x,y)
+    constructor(x,y,velocity_x,velocity_y)
     {
         this.x = x
         this.y=y
         this.radius = 15
-        this.velocity_x = 5
-        this.velocity_y = 5
+        this.velocity_x = velocity_x
+        this.velocity_y = velocity_y
     }
 
     draw()
@@ -92,7 +93,7 @@ const layout = [
   
 //Object Creation
 //pacman object
-const pacman =  new player(75,75)
+const pacman =  new player(75,75,5,5)
 
 //boundary object
 let xCoordinate = 0
@@ -113,15 +114,65 @@ layout.forEach((row)=>{
     yCoordinate = yCoordinate+50
 })
 
-gameLoop()
-//All functions
-function gameLoop() {
+function checkCollision(player)
+{
+    boundaryContainer.forEach((boundary)=>{
+    
+        if(player.y-player.radius<=(boundary.y+boundary.height) && 
+            player.y+player.radius>=(boundary.y) &&
+            player.x-player.radius<=(boundary.x+boundary.width) &&
+            player.x+player.radius>=(boundary.x)
+            )
+            {
+                switch(currentKey)
+                    {
+                        case `w`:
+                            player.velocity_y = 0
+                            player.y = player.y + 10
+                            currentKey = null
+                            return true
+                        case `s`:
+                            player.velocity_y = 0   
+                            player.y = player.y - 10
+                            currentKey = null
+                            return true
+                        case `a`:
+                            player.velocity_x = 0 
+                            player.x = player.x + 10
+                            currentKey = null
+                            return true
+                        case `d`:
+                            player.velocity_x = 0 
+                            player.x = player.x - 10
+                            currentKey = null
+                            return true
+                    }
+            }
+       
+    })
+    
+}
+
+
+gameLoop(pacman)
+//All functionss
+function gameLoop(player) {
     pacman.clear()
     boundaryContainer.forEach((boundary)=>{
         boundary.draw()
     })
     pacman.draw()
-    pacman.move()
+    if(checkCollision(pacman)!= true)
+    {
+        if(flag==false)
+        {
+            player.velocity_x=5
+            player.velocity_y=5
+        }
+        
+        pacman.move()
+    }
+    
     requestAnimationFrame(gameLoop);
 }
 
@@ -130,8 +181,17 @@ document.addEventListener(`keydown`,(event)=>{
     currentKey = event.key
     if(previousKey != currentKey)
     {
+        flag = false
+    }
+    else{
+
+        flag = true
+    }
+   
+    if(previousKey != currentKey)
+    {
         previousKey = currentKey
     }
-    
+   
 })
 
