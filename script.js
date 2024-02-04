@@ -200,7 +200,11 @@ layout.forEach((row)=>{
 })
 
 
-//All functionsd
+//All functions
+function reloadPage() {
+    location.reload();
+  }
+  
 function score()
 {
     calculatedScore = (46-pointContainer.length)*10
