@@ -3,7 +3,6 @@ let canvas = document.getElementById("myCanvas");
 let c = canvas.getContext("2d");
 let previousKey = null
 let currentKey = null
-let flag = true
 
 class player
 {
@@ -161,15 +160,11 @@ function gameLoop(player) {
     boundaryContainer.forEach((boundary)=>{
         boundary.draw()
     })
+    pacman.velocity_x = 5
+    pacman.velocity_y = 5
     pacman.draw()
     if(checkCollision(pacman)!= true)
     {
-        if(flag==false)
-        {
-            player.velocity_x=5
-            player.velocity_y=5
-        }
-        
         pacman.move()
     }
     
@@ -179,14 +174,6 @@ function gameLoop(player) {
 //All Event Listners
 document.addEventListener(`keydown`,(event)=>{
     currentKey = event.key
-    if(previousKey != currentKey)
-    {
-        flag = false
-    }
-    else{
-
-        flag = true
-    }
    
     if(previousKey != currentKey)
     {
