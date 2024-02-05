@@ -1,4 +1,6 @@
 # Pacman
+![Pacman](https://github.com/shubham20242/pacman/assets/156003468/a09f1db0-adb9-4f2d-abd7-ebd835237f77)
+
 <h2>Description</h2>
 This is a PacmanMan game slightly different from an original game.In this you have to take all the points in order to win.
 There is ghost in the map if you hit the ghost then you are dead.Unlike the original game the ghost is stationary within the map.
