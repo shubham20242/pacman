@@ -6,6 +6,7 @@ let currentKey = null
 let scoretab = document.getElementById(`scorelocate`)
 let winnertab = document.getElementById(`winner`)
 let calculatedScore = 0
+let stop = false
 
 class player
 {
@@ -53,50 +54,30 @@ class player
     }
 }
 
+
 class ghost
 {
-    constructor(x,y,velocity_x,velocity_y)
+    constructor(x,y)
     {
         this.x = x
         this.y= y
         this.radius = 15
-        this.velocity_x = velocity_x
-        this.velocity_y = velocity_y
     }
 
     draw()
     {
         c.beginPath()
-        //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
         c.arc(this.x,this.y,this.radius,0,2*Math.PI)
-        c.fillStyle = "yellow"
+        c.fillStyle = "red"
         c.fill()
         c.stroke() //its just giving a boundary
     }
 
-    move()
-    {
-        switch(currentKey)
-        {
-            case `w`:
-                this.y = this.y - this.velocity_y     
-                break
-            case `s`:
-                this.y = this.y + this.velocity_y  
-                break
-            case `a`:
-                this.x = this.x - this.velocity_x
-                break
-            case `d`:
-                this.x = this.x + this.velocity_x 
-                break
-        }
-    }
     clear()
     {
-       // c.clearRect(this.x-(this.radius),this.y-(this.radius),this.radius*2,this.radius*2)
-       c.clearRect(0,0,500,500)
+        c.clearRect(0,0,500,500)
     }
+    
 }
 
 class RectBoundary{
@@ -147,7 +128,6 @@ class point
 
     clear()
     {
-        console.log(`called`)
         c.clearRect(0,0,500,500)
     }
     
@@ -163,7 +143,7 @@ const layout = [
     ['-', 'p', '-', 'p', '-', '-', 'p', '-', 'p', '-'],
     ['-', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '-'],
     ['-', 'p', '-', '-', 'p', '-', '-', '-', 'p', '-'],
-    ['-', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '-'],
+    ['-', 'p', 'p', 'g', 'p', 'p', 'p', 'p', 'p', '-'],
     ['-', 'p', '-', 'p', '-', '-', 'p', '-', 'p', '-'],
     ['-', 'p', '-', 'p', '-', '-', 'p', '-', 'p', '-'],
     ['-', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '-'],
@@ -178,6 +158,7 @@ let xCoordinate = 0
 let yCoordinate = 0
 let boundaryContainer = []
 let pointContainer = []
+let ghostContainer = []
 layout.forEach((row)=>{
     
     row.forEach((element)=>{
@@ -192,6 +173,13 @@ layout.forEach((row)=>{
             //Points object
             pointContainer.push(new point(xCoordinate+25,yCoordinate+25,5,5))
         }
+        else if(element==`g`)
+        {
+            console.log( `ghost`)
+            ghostContainer.push(new ghost(xCoordinate+25,yCoordinate+25))
+            console.log(ghostContainer.length)
+        }
+        
         xCoordinate = xCoordinate+50
        
     })
@@ -225,6 +213,13 @@ function drawpoints()
     })
 }
 
+function drawghosts()
+{
+    ghostContainer.forEach((element)=>{
+        element.draw()
+    })
+}
+
 function drawboundary()
 {
     boundaryContainer.forEach((boundary)=>{
@@ -240,15 +235,41 @@ function checkPointsCollision()
             
             pointContainer = pointContainer.filter((element) => {
                 element.clear()
-                console.log(pointContainer.length)
                 return!((element.x === pacman.x) &&  (element.y===pacman.y))
             });
+        }
+        else{
+            return false
         }
 
         
     })
     
 }
+
+function checkGhostCollision()
+{
+    
+    ghostContainer.forEach((element)=>{
+
+        if((pacman.x===(element.x) ) && (pacman.y===(element.y)))
+        {
+            console.log(`called`)
+            pointContainer = pointContainer.filter((element) => {
+                element.clear()
+                return!((element.x === pacman.x) &&  (element.y===pacman.y))
+            });
+        }
+        else{
+           
+            return false
+        }
+
+        
+    })
+    
+}
+
 function checkCollision(player)
 {
     boundaryContainer.forEach((boundary)=>{
@@ -303,17 +324,33 @@ function gameLoop(player) {
     pacman.velocity_y = 5
     pacman.draw()
     drawpoints()
+   
     if(checkCollision(pacman)!= true)
     {
         pacman.move()
         checkPointsCollision()
+        if(checkGhostCollision()==true)
+        {
+            console.log(`called`)
+            winnertab.innerHTML = `You Won`
+            stop = true
+        }
         drawpoints()
+        drawghosts()
         drawboundary()
         pacman.draw()
     }
+    
     score()
     displayWinner()
-    requestAnimationFrame(gameLoop);
+    if(stop === false)
+    {
+        requestAnimationFrame(gameLoop);
+    }
+    else{
+        return
+    }
+    
 }
 
 //All Event Listners
