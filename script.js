@@ -58,7 +58,7 @@ class ghost
     constructor(x,y,velocity_x,velocity_y)
     {
         this.x = x
-        this.y=y
+        this.y= y
         this.radius = 15
         this.velocity_x = velocity_x
         this.velocity_y = velocity_y
@@ -253,32 +253,36 @@ function checkCollision(player)
 {
     boundaryContainer.forEach((boundary)=>{
     
-        if(player.y-(player.radius)<=(boundary.y+boundary.height) && 
-            player.y+(player.radius)>=(boundary.y) &&
-            player.x-(player.radius)<=(boundary.x+boundary.width) &&
-            player.x+(player.radius)>=(boundary.x)
+        if(player.y-(player.radius + player.velocity_y)<=(boundary.y+boundary.height) && 
+            player.y+(player.radius + player.velocity_y)>=(boundary.y) &&
+            player.x-(player.radius+player.velocity_x)<=(boundary.x+boundary.width) &&
+            player.x+(player.radius + player.velocity_x )>=(boundary.x)
             )
             {
                 switch(currentKey)
                     {
                         case `w`:
                             player.velocity_y = 0
-                            player.y = player.y + 10
+                        
+                            player.y = player.y + 5
                             currentKey = null
                             return true
                         case `s`:
                             player.velocity_y = 0   
-                            player.y = player.y - 10
+                            
+                            player.y = player.y - 5
                             currentKey = null
                             return true
                         case `a`:
                             player.velocity_x = 0 
-                            player.x = player.x + 10
+                           
+                            player.x = player.x + 5
                             currentKey = null
                             return true
                         case `d`:
                             player.velocity_x = 0 
-                            player.x = player.x - 10
+                            
+                            player.x = player.x - 5
                             currentKey = null
                             return true
                     }
